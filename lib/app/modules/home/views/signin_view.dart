@@ -1,12 +1,20 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:online_book_reading_app/app/modules/home/controllers/signin_controller.dart';
 import 'package:online_book_reading_app/app/modules/home/views/home_view.dart';
+import 'package:online_book_reading_app/app/modules/home/views/signup_view.dart';
 import 'package:online_book_reading_app/app/modules/home/views/webview_view.dart';
 
 class SignIn extends StatelessWidget {
+  final SigninController _controller = Get.put(SigninController());
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   // ignore: avoid_types_as_parameter_names
-  const SignIn({super.key, Key});
+  SignIn({super.key, Key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,36 +34,54 @@ class SignIn extends StatelessWidget {
             ),
           ),
           Container(
-            // width: 335,
             height: 48,
             margin: const EdgeInsets.only(left: 20, top: 300, right: 20),
-            child: const TextField(
-                decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Type Your Email',
-              icon: Icon(Icons.mail),
-              hintStyle: TextStyle(
+            child: TextField(
+              controller: _controller.emailcontroller, // Tambahkan controller
+              style: const TextStyle(
+                color: Colors.white, // Atur warna teks menjadi putih
+                fontFamily: 'Readex Pro',
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Type Your Email',
+                icon: Icon(Icons.mail),
+                hintStyle: TextStyle(
                   fontFamily: 'Readex Pro',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff7E8CA0)),
-            )),
+                  color: Color(0xff7E8CA0),
+                ),
+              ),
+            ),
           ),
           Container(
-            // width: 335,
             height: 48,
             margin: const EdgeInsets.only(left: 20, top: 380, right: 20),
-            child: const TextField(
-                decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Type Your Password',
-              icon: Icon(Icons.lock),
-              hintStyle: TextStyle(
+            child: TextField(
+              controller:
+                  _controller.passwordcontroller, // Tambahkan controller
+              obscureText: true, // Jika ini adalah field password
+              style: const TextStyle(
+                color: Colors.white, // Atur warna teks menjadi putih
+                fontFamily: 'Readex Pro',
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Type Your Password',
+                icon: Icon(Icons.lock),
+                hintStyle: TextStyle(
                   fontFamily: 'Readex Pro',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff7E8CA0)),
-            )),
+                  color: Color(0xff7E8CA0),
+                ),
+              ),
+            ),
           ),
           Container(
             margin: const EdgeInsets.only(left: 250, top: 440),
@@ -76,9 +102,15 @@ class SignIn extends StatelessWidget {
               style: TextButton.styleFrom(
                 backgroundColor: const Color(0xff5360D7),
               ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeView()));
+              onPressed: () async {
+                await _controller.loginUser(_controller.emailcontroller.text,
+                    _controller.passwordcontroller.text);
+
+                if (_controller.isLoggedIn.value) {
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => HomeView()));
+                }
               },
               child: const Text(
                 'Sign In',
@@ -96,11 +128,13 @@ class SignIn extends StatelessWidget {
             margin: const EdgeInsets.only(left: 20, top: 560),
             child: TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Color(0xff17161D),
+                backgroundColor: const Color(0xff17161D),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WebViewPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const WebViewPage()));
               },
               child: const Text(
                 'Or continue with',
@@ -121,7 +155,8 @@ class SignIn extends StatelessWidget {
                     // Tambahkan navigasi ke halaman WebViewPage ketika logo Facebook ditekan
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => WebViewPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const WebViewPage()),
                     );
                   },
                   child: Container(
@@ -144,24 +179,35 @@ class SignIn extends StatelessWidget {
             width: 219,
             height: 15,
             margin: const EdgeInsets.only(top: 850, left: 100),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Belum punya akun?',
                   style: TextStyle(
-                      fontFamily: 'Lexend',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xffFFFFFF)),
+                    fontFamily: 'Lexend',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xffFFFFFF),
+                  ),
                 ),
-                Text(
-                  ' Daftar dulu yuk',
-                  style: TextStyle(
+                InkWell(
+                  onTap: () {
+                    // Navigate to SignUp page when the text is tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUp()),
+                    );
+                  },
+                  child: const Text(
+                    ' Daftar dulu yuk',
+                    style: TextStyle(
                       fontFamily: 'Lexend',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff5360D7)),
+                      color: Color(0xff5360D7),
+                    ),
+                  ),
                 )
               ],
             ),

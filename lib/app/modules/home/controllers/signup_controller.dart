@@ -1,33 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_book_reading_app/app/modules/home/views/signin_view.dart';
 
-class SigninController extends GetxController {
+class SignUpController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
   RxBool isLoading = false.obs;
-  RxBool isLoggedIn = false.obs; // Add the isLoggedIn property
-
-  Future<void> loginUser(String email, String password) async {
+  Future<void> registerUser(String email, String password) async {
     try {
       isLoading.value = true;
-      await _auth.signInWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      Get.snackbar('Success', 'Login successful',
+      Get.snackbar('Success', 'Registration successful',
           backgroundColor: Colors.green);
-
-      // Set isLoggedIn to true if login is successful
-      isLoggedIn.value = true;
+      Get.off(SignIn()); //Navigate ke Login Page
     } catch (error) {
-      Get.snackbar('Error', 'Login failed: $error',
+      Get.snackbar('Error', 'Registration failed: $error',
           backgroundColor: Colors.red);
-
-      // Set isLoggedIn to false if login fails
-      isLoggedIn.value = false;
     } finally {
       isLoading.value = false;
     }

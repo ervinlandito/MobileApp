@@ -13,16 +13,29 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Beranda'),
+        backgroundColor: const Color(0xff17161D),
+        toolbarHeight: 70,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              homeController.logout(); // Uncomment and modify as needed
+            },
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xff17161D),
       body: Stack(
         children: [
           Positioned(
-            top: 50,
+            top: 0,
             left: 20,
             // ignore: avoid_unnecessary_containers
             child: Container(
               child: const Text(
-                'Hi Jenifer!',
+                'Hi Landito!',
                 style: TextStyle(
                     fontFamily: 'Readex Pro',
                     fontSize: 18,
@@ -32,7 +45,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 20, top: 95, right: 20),
+            margin: const EdgeInsets.only(left: 20, top: 30, right: 20),
             child: const Text(
               'What are we reading this time.',
               style: TextStyle(
@@ -43,7 +56,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 150),
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 60),
             width: 400,
             height: 100,
             child: Card(
@@ -54,7 +67,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 280, left: 15),
+            margin: const EdgeInsets.only(top: 190, left: 15),
             child: const Text(
               'Mungkin Anda Sukai',
               style: TextStyle(
@@ -65,7 +78,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 280, left: 280, right: 15),
+            margin: const EdgeInsets.only(top: 190, left: 280, right: 15),
             child: const Text(
               'Lebih banyak',
               style: TextStyle(
@@ -78,7 +91,7 @@ class HomeView extends GetView<HomeController> {
           Container(
             //color: const Color(0xffFFFFFF),
             margin: const EdgeInsets.only(
-              top: 330,
+              top: 220,
               left: 15,
               right: 15,
             ),
@@ -143,7 +156,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 550, left: 15),
+            margin: const EdgeInsets.only(top: 450, left: 15),
             child: const Text(
               'Trendings Books',
               style: TextStyle(
@@ -154,7 +167,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 550, left: 280, right: 15),
+            margin: const EdgeInsets.only(top: 450, left: 280, right: 15),
             child: const Text(
               'Lebih banyak',
               style: TextStyle(
@@ -167,7 +180,7 @@ class HomeView extends GetView<HomeController> {
           Container(
             //color: const Color(0xffFFFFFF),
             margin: const EdgeInsets.only(
-              top: 600,
+              top: 500,
               left: 15,
               right: 15,
             ),
@@ -176,36 +189,57 @@ class HomeView extends GetView<HomeController> {
               children: [
                 Align(
                   alignment: Alignment.topLeft, // Ganti sesuai kebutuhan
-                  child: Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Image.asset(
-                      'assets/images/singasari.jpg',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  child: Obx(() => homeController.data.isEmpty
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Container(
+                            width: 115,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        homeController.data[1].bookImage))),
+                          ))),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter, // Ganti sesuai kebutuhan
-                  child: Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Image.asset(
-                      'assets/images/the_red_door.jpg',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  child: Obx(() => homeController.data.isEmpty
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Container(
+                            width: 115,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        homeController.data[9].bookImage))),
+                          ))),
                 ),
                 Align(
                   alignment: Alignment.topRight, // Ganti sesuai kebutuhan
-                  child: Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Image.asset(
-                      'assets/images/the_last_blue.jpg',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  child: Obx(() => homeController.data.isEmpty
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Container(
+                            width: 115,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        homeController.data[2].bookImage))),
+                          ))),
                 ),
               ],
             ),

@@ -2,10 +2,14 @@
 
 import 'dart:io' show File;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:online_book_reading_app/app/modules/home/views/signin_view.dart';
 
 class ProfileController extends GetxController {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final ImagePicker imagePicker = ImagePicker();
   final Rx<File?> pickedImage = Rx<File?>(null);
 
@@ -38,4 +42,9 @@ class ProfileController extends GetxController {
   }
 
   void setImage(String path) {}
+
+  void signOut() async {
+    await _auth.signOut();
+    Get.off(SignIn());
+  }
 }

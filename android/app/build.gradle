@@ -22,6 +22,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: 'com.android.application'
+// Tambahkan baris di bawah ini.
+apply plugin: 'com.google.gms.google-services' 
+
 android {
     namespace "com.example.online_book_reading_app"
     compileSdkVersion 33
